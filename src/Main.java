@@ -1,3 +1,7 @@
+import api.FileHandler;
+import gui.Login;
+
+
 /**
  * Το πρόγραμμά σας πρέπει να έχει μόνο μία main, η οποία πρέπει να είναι η παρακάτω.
  * <p>
@@ -7,7 +11,11 @@
 public class Main {
     public static void main(String[] args) {
 
-        // ADD YOUR CODE HERE
+        FileHandler.initializeDefaultAdmins();
+        FileHandler.initializeDefaultCustomers();
+        FileHandler.initializeDefaultProducts();
+        Login startingPage = new Login();
+
 
     }
 }
