@@ -1,45 +1,62 @@
 package api;
+
+import java.io.Serializable;
 import java.util.List;
 
+public class Admin extends User implements Serializable {
+    private static final long serialVersionUID = 6643028710903648976L;
 
-public class Admin extends User{
-    private ProductManagement productManager;
-
-        /**
-         *
-         * @param username  username of Admin
-         * @param password password of Admin
-         * creates a ProductManagement object for managing products
-         */
-
-    public Admin(String username,String password) {
-        super(username,password,"admin");
-        this.productManager = new ProductManagement();
+    public Admin(String username, String password) {
+        super(username, password, "admin");
     }
 
-        /**
-         * Method to add a product
-         * @param product the product which we add
-         */
-    public void addProduct(Product product){
-        productManager.addProduct(product);
+    /**
+     * Μέθοδος για την προβολή όλων των χρηστών.
+     *
+     * @param users Λίστα χρηστών για να την εμφανίσει ο διαχειριστής.
+     */
+    public void viewAllUsers(List<User> users) {
+        System.out.println("---- Όλοι οι Χρήστες ----");
+        for (User user : users) {
+            System.out.println(user.getUsername() + " - " + user.getRole());
+        }
+    }
+
+    /**
+     * Μέθοδος για την προσθήκη νέου χρήστη.
+     *
+     * @param users Λίστα χρηστών στην οποία θα προστεθεί ο νέος χρήστης.
+     * @param newUser Ο νέος χρήστης που θα προστεθεί.
+     */
+    public void addUser(List<User> users, User newUser) {
+        users.add(newUser);
+        FileHandler.saveUsers(users);
+        System.out.println("Ο χρήστης " + newUser.getUsername() + " προστέθηκε επιτυχώς.");
+    }
+
+    /**
+     * Μέθοδος για την διαγραφή χρήστη.
+     *
+     * @param users Λίστα χρηστών από την οποία θα διαγραφεί ο χρήστης.
+     * @param username Το username του χρήστη που θέλουμε να διαγράψουμε.
+     */
+    public void deleteUser(List<User> users, String username) {
+        User userToRemove = null;
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                userToRemove = user;
+                break;
+            }
+        }
+
+        if (userToRemove != null) {
+            users.remove(userToRemove);
+            FileHandler.saveUsers(users);
+            System.out.println("Ο χρήστης " + username + " διαγράφηκε επιτυχώς.");
+        } else {
+            System.out.println("Ο χρήστης με όνομα " + username + " δεν βρέθηκε.");
+        }
     }
 
 
-        /**
-         * Method to remove a product by ID
-         * @param id the id of the product which we remove
-         */
-    public void removeProduct(String id){
-        productManager.removeProduct(id);
-    }
-
-        /**
-         * Method to search a product
-         * @param name the name or a part of the name
-         * @return the name of the product
-         */
-    public List<Product> searchByName(String name){
-        reutrn productManager.searchByName(name);
-    }
 }

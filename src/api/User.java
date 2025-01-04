@@ -1,17 +1,14 @@
 package api;
 
 
-public abstract class User{
+import java.io.Serializable;
+
+public abstract class User  implements Serializable {
     private String username;
     private String password;
     private String role;
 
-    /**
-     *
-     * @param username name of the user
-     * @param password password of the user
-     * @param role role of the user(admin/customer)
-     */
+
 
     public User(String username,String password,String role){
         this.username = username;
@@ -20,8 +17,8 @@ public abstract class User{
     }
 
     //getters
-    Public String getUsername(){return username;}
-    Public String getPassword(){return password;}
-    Public String getRole(){return role;}
+     public String getUsername(){return username;}
+    public  String getPassword(){return password;}
+    public String getRole(){return role;}
 
 }
