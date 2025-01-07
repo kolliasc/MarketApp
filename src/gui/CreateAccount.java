@@ -8,6 +8,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Η κλάση CreateAccount αντιπροσωπεύει την οθόνη δημιουργίας λογαριασμού για νέους χρήστες.
+ * Επιτρέπει την εισαγωγή των στοιχείων του χρήστη και τη δημιουργία ενός νέου λογαριασμού.
+ */
 public class CreateAccount extends JFrame {
     private JTextField textField1;
     private JButton createAccountButton;
@@ -16,6 +20,10 @@ public class CreateAccount extends JFrame {
     private JTextField textField4;
     private JPasswordField passwordField1;
 
+    /**
+     * Κατασκευαστής της οθόνης δημιουργίας λογαριασμού.
+     * Ορίζει τις παραμέτρους της οθόνης και προσθέτει τη λογική για τη δημιουργία του λογαριασμού.
+     */
     public CreateAccount() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);

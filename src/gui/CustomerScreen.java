@@ -13,6 +13,10 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Η κλάση CustomerScreen αντιπροσωπεύει την οθόνη του πελάτη με δυνατότητες αναζήτησης προϊόντων,
+ * διαχείρισης καλαθιού και παραγγελιών, και αποσύνδεσης.
+ */
 public class CustomerScreen extends JFrame {
 
     private JPanel panel1;
@@ -23,6 +27,9 @@ public class CustomerScreen extends JFrame {
 
     private List<Product> cart;
 
+    /**
+     * Κατασκευαστής για την οθόνη πελάτη. Ορίζει τα οπτικά στοιχεία και τις ενέργειες των κουμπιών.
+     */
     public CustomerScreen() {
         cart = new ArrayList<>();
 
@@ -43,6 +50,10 @@ public class CustomerScreen extends JFrame {
         });
     }
 
+    /**
+     * Μέθοδος για αναζήτηση προϊόντων με βάση τίτλο, κατηγορία και υποκατηγορία.
+     * Παρουσιάζει τα αποτελέσματα της αναζήτησης στον χρήστη.
+     */
     private void searchProduct() {
         List<Product> products = FileHandler.loadProducts();
 
@@ -106,6 +117,10 @@ public class CustomerScreen extends JFrame {
         }
     }
 
+    /**
+     * Εμφανίζει τα αποτελέσματα αναζήτησης προϊόντων και επιτρέπει στον χρήστη να επιλέξει ένα προϊόν για προβολή.
+     * @param products Η λίστα με τα προϊόντα που πληρούν τα κριτήρια αναζήτησης.
+     */
     private void showSearchResults(List<Product> products) {
         String[] productNames = products.stream().map(Product::getName).toArray(String[]::new);
         String selectedProduct = (String) JOptionPane.showInputDialog(this,
@@ -126,6 +141,10 @@ public class CustomerScreen extends JFrame {
         }
     }
 
+    /**
+     * Εμφανίζει τις λεπτομέρειες ενός επιλεγμένου προϊόντος και επιτρέπει στον χρήστη να προσθέσει ποσότητα στο καλάθι του.
+     * @param product Το προϊόν για το οποίο εμφανίζονται οι λεπτομέρειες.
+     */
     private void showProductDetails(Product product) {
         JTextField quantityField = new JTextField();
 
@@ -163,6 +182,9 @@ public class CustomerScreen extends JFrame {
         }
     }
 
+    /**
+     * Διαχειρίζεται το καλάθι του χρήστη, επιτρέποντας την ολοκλήρωση της παραγγελίας.
+     */
     private void manageCart() {
         if (cart.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Το καλάθι σας είναι άδειο.");
@@ -199,6 +221,11 @@ public class CustomerScreen extends JFrame {
         }
     }
 
+    /**
+     * Αποθηκεύει την παραγγελία στο ιστορικό παραγγελιών.
+     * @param purchasedProducts Η λίστα με τα προϊόντα που αγοράστηκαν.
+     * @param totalCost Το συνολικό κόστος της παραγγελίας.
+     */
     private void saveOrderToHistory(List<Product> purchasedProducts, double totalCost) {
         LocalDate orderDate = LocalDate.now();
 
@@ -212,6 +239,9 @@ public class CustomerScreen extends JFrame {
         FileHandler.saveOrder(order);
     }
 
+    /**
+     * Διαχειρίζεται το ιστορικό παραγγελιών του χρήστη.
+     */
     private void manageOrders() {
         List<Order> orders = FileHandler.loadOrders();
 

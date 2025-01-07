@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import api.FileHandler;
 
+/**
+ * Η κλάση Login παρέχει την οθόνη εισόδου για τον χρήστη, με δυνατότητες σύνδεσης ή δημιουργίας νέου λογαριασμού.
+ */
 public class Login extends JFrame {
     private JTextArea usernameTextArea;
     private JTextArea passwordTextArea;
@@ -12,7 +15,9 @@ public class Login extends JFrame {
     private JPanel loginPanel;
     private JButton createAccountButton;
 
-
+    /**
+     * Κατασκευαστής για την οθόνη εισόδου. Δημιουργεί και διαχειρίζεται τα οπτικά στοιχεία της οθόνης.
+     */
     public Login(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -38,15 +43,15 @@ public class Login extends JFrame {
 
                 if (FileHandler.userExists(username, password)) {
                     if (FileHandler.isAdmin(username)) {
-                        JOptionPane.showMessageDialog(Login.this, "Welcome Admin!");
+                        JOptionPane.showMessageDialog(Login.this, "Καλωσήρθες Admin!");
                         new AdminScreen();
                     } else {
-                        JOptionPane.showMessageDialog(Login.this, "Welcome User!");
+                        JOptionPane.showMessageDialog(Login.this, "Welcome Χρήστη!");
                         new CustomerScreen();
                     }
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(Login.this, "Invalid credentials. Please try again.");
+                    JOptionPane.showMessageDialog(Login.this, "Λάθος,προσπάθησε ξανά.");
                     usernameTextArea.setText("");
                     passwordTextArea.setText("");
                 }

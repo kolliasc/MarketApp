@@ -3,8 +3,22 @@ package api;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Η κλάση {@code Admin} υλοποιεί τη λειτουργικότητα ενός διαχειριστή (Admin) του συστήματος.
+ * Επεκτείνει την κλάση {@link User} και προσθέτει επιπλέον δυνατότητες για τη διαχείριση χρηστών.
+ * Η κλάση είναι {@link Serializable} για αποθήκευση της κατάστασης.
+ */
+
 public class Admin extends User implements Serializable {
     private static final long serialVersionUID = 6643028710903648976L;
+
+    /**
+     * Κατασκευαστής της κλάσης {@code Admin}.
+     * Δημιουργεί έναν νέο διαχειριστή με όνομα χρήστη και κωδικό πρόσβασης.
+     *
+     * @param username Το όνομα χρήστη του διαχειριστή.
+     * @param password Ο κωδικός πρόσβασης του διαχειριστή.
+     */
 
     public Admin(String username, String password) {
         super(username, password, "admin");
