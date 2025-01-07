@@ -8,15 +8,22 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Οθόνη Διαχειριστή που επιτρέπει στους διαχειριστές να υποβάλουν, να επεξεργάζονται και να αναζητούν προϊόντα.
+ * Περιλαμβάνει δυνατότητες προβολής στατιστικών στοιχείων και logout.
+ */
 public class AdminScreen extends JFrame {
 
     private JPanel panel1;
-    private JButton submitProductsButton;
     private JButton editProductsButton;
     private JButton searchProductsButton;
+    private JButton submitProductsButton;
     private JButton showStatisticsButton;
     private JButton logout;
 
+    /**
+     * Δημιουργεί την οθόνη διαχειριστή με τα αντίστοιχα κουμπιά και ενέργειες.
+     */
     public AdminScreen() {
         setTitle("Admin Screen");
         setSize(400, 300);
@@ -24,9 +31,9 @@ public class AdminScreen extends JFrame {
 
         panel1 = new JPanel();
         panel1.setLayout(new GridLayout(5, 1));
-        panel1.add(submitProductsButton);
         panel1.add(editProductsButton);
         panel1.add(searchProductsButton);
+        panel1.add(submitProductsButton);
         panel1.add(showStatisticsButton);
         panel1.add(logout);
 
@@ -34,7 +41,7 @@ public class AdminScreen extends JFrame {
 
 
         add(panel1);
-        searchProductsButton.addActionListener(e -> {
+        submitProductsButton.addActionListener(e -> {
             searchProduct();
         });
         logout.addActionListener(e -> {
@@ -42,12 +49,12 @@ public class AdminScreen extends JFrame {
             dispose();
         });
 
-        editProductsButton.addActionListener(new ActionListener() {
+        searchProductsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String currentUsername = getCurrentUserUsername(); // Get the current logged-in user
                 if (!FileHandler.isAdmin(currentUsername)) {
-                    JOptionPane.showMessageDialog(null, "Only admins can edit products.");
+                    JOptionPane.showMessageDialog(null, "Σφάλμα.");
                     return;
                 }
 
@@ -56,13 +63,13 @@ public class AdminScreen extends JFrame {
         });
 
 
-        submitProductsButton.addActionListener(new ActionListener() {
+        editProductsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Check if the current user is an admin
-                String currentUsername = getCurrentUserUsername(); // Assuming you have a method to get the current user
+                String currentUsername = getCurrentUserUsername();
                 if (!FileHandler.isAdmin(currentUsername)) {
-                    JOptionPane.showMessageDialog(null, "Only admins can submit products.");
+                    JOptionPane.showMessageDialog(null, "Μόνο οι διαχειριστές μπορούν να καταχωρήσουν προϊόντα.");
                     return;
                 }
 
@@ -74,32 +81,39 @@ public class AdminScreen extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Επιστρέφει το όνομα χρήστη του τρέχοντος συνδεδεμένου χρήστη.
+     * @return Το όνομα χρήστη του τρέχοντος χρήστη.
+     */
     private String getCurrentUserUsername() {
-        // This should return the username of the currently logged-in user
-        return "admin1"; // Example hardcoded username
+
+        return "admin1";
     }
 
+    /**
+     * Εμφανίζει τη φόρμα υποβολής νέου προϊόντος.
+     */
     private void showProductSubmissionForm() {
         // Create a new frame for the product submission form
-        JFrame productFormFrame = new JFrame("Submit Product");
+        JFrame productFormFrame = new JFrame("Καταχώρηση προϊόντος");
         productFormFrame.setSize(400, 300);
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridLayout(6, 2));
 
-        JLabel nameLabel = new JLabel("Product Name:");
+        JLabel nameLabel = new JLabel("Όνομα προϊόντος:");
         JTextField nameField = new JTextField();
-        JLabel descriptionLabel = new JLabel("Description:");
+        JLabel descriptionLabel = new JLabel("Περιγραφή:");
         JTextField descriptionField = new JTextField();
-        JLabel categoryLabel = new JLabel("Category:");
-        JComboBox<String> categoryComboBox = new JComboBox<>(new String[]{"Fresh Foods", "Frozen Foods", "Dairy", "Meats", "Beverages"});
+        JLabel categoryLabel = new JLabel("Κατηγορία:");
+        JComboBox<String> categoryComboBox = new JComboBox<>(new String[]{"Φρέσκα Τρόφιμα", "Κατεψυγμένα τρόφιμα", "Προϊόντα ψυγείου", "Αλλαντικά", "Αλκοολούχα ποτά"});
         JLabel subcategoryLabel = new JLabel("Subcategory:");
-        JComboBox<String> subcategoryComboBox = new JComboBox<>(new String[]{"Fruits", "Vegetables", "Fish", "Meats"});
-        JLabel priceLabel = new JLabel("Price:");
+        JComboBox<String> subcategoryComboBox = new JComboBox<>(new String[]{"Φρούτα", "Κατεψυγμένα λαχανικά","Τυριά", "Ζαμπόν", "Μπύρα"});
+        JLabel priceLabel = new JLabel("Τιμή:");
         JTextField priceField = new JTextField();
-        JLabel quantityLabel = new JLabel("Quantity:");
+        JLabel quantityLabel = new JLabel("Ποσότητα:");
         JTextField quantityField = new JTextField();
 
-        JButton submitButton = new JButton("Submit Product");
+        JButton submitButton = new JButton("Επιβεβαίωση προϊόντος");
         formPanel.add(nameLabel);
         formPanel.add(nameField);
         formPanel.add(descriptionLabel);
@@ -136,24 +150,27 @@ public class AdminScreen extends JFrame {
                         throw new NumberFormatException();
                     }
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Invalid price or quantity.");
+                    JOptionPane.showMessageDialog(null, "Λάθος τιμή ή ποσότητα.");
                     return;
                 }
 
                 if (name.isEmpty() || description.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "All fields are required.");
+                    JOptionPane.showMessageDialog(null, "Όλα τα πεδία πρέπει να συμπληρωθούν.");
                     return;
                 }
 
                 Product newProduct = new Product(name, description, category, subcategory, price, quantity);
                 FileHandler.addProduct(newProduct);
 
-                JOptionPane.showMessageDialog(null, "Product submitted successfully.");
+                JOptionPane.showMessageDialog(null, "Το προϊόν καταχωρήθηκε επιτυχώς.");
                 productFormFrame.dispose();
             }
         });
     }
 
+    /**
+     * Εκτελεί την αναζήτηση προϊόντων με φίλτρα για τίτλο, κατηγορία και υποκατηγορία.
+     */
     private void searchProduct() {
 
         java.util.List<Product> products = FileHandler.loadProducts();
@@ -226,6 +243,10 @@ public class AdminScreen extends JFrame {
     }
 
 
+    /**
+     * Εμφανίζει τα αποτελέσματα της αναζήτησης προϊόντων.
+     * @param products Τα προϊόντα που αντιστοιχούν στα κριτήρια αναζήτησης.
+     */
     private void showSearchResults(List<Product> products) {
         String[] productNames = products.stream().map(Product::getName).toArray(String[]::new);
         String selectedProduct = (String) JOptionPane.showInputDialog(this,
@@ -246,6 +267,11 @@ public class AdminScreen extends JFrame {
             }
         }
     }
+
+    /**
+     * Εμφανίζει τις λεπτομέρειες ενός επιλεγμένου προϊόντος.
+     * @param product Το προϊόν για το οποίο θέλουμε να δείξουμε τις λεπτομέρειες.
+     */
     private void showProductDetails(Product product) {
 
         JTextField quantityField = new JTextField();
@@ -266,6 +292,10 @@ public class AdminScreen extends JFrame {
         int result = JOptionPane.showConfirmDialog(this, panel, "Προβολή Προϊόντος", JOptionPane.OK_CANCEL_OPTION);
 
     }
+
+    /**
+     * Εκτελεί την λειτουργία επεξεργασία ενός προϊόντος (όνομα, περιγραφή κλπ)
+     */
     private void showProductEditForm() {
 
         List<Product> products = FileHandler.loadProducts();
@@ -293,28 +323,28 @@ public class AdminScreen extends JFrame {
 
             if (selectedProduct != null) {
 
-                JFrame editFormFrame = new JFrame("Edit Product");
+                JFrame editFormFrame = new JFrame("Eπεξεργασία προϊόντος");
                 editFormFrame.setSize(400, 300);
                 JPanel formPanel = new JPanel();
                 formPanel.setLayout(new GridLayout(6, 2));
 
 
-                JLabel nameLabel = new JLabel("Product Name:");
+                JLabel nameLabel = new JLabel("Όνομα προϊόντος:");
                 JTextField nameField = new JTextField(selectedProduct.getName());
-                JLabel descriptionLabel = new JLabel("Description:");
+                JLabel descriptionLabel = new JLabel("Περιγραφή:");
                 JTextField descriptionField = new JTextField(selectedProduct.getDescription());
-                JLabel categoryLabel = new JLabel("Category:");
-                JComboBox<String> categoryComboBox = new JComboBox<>(new String[]{"Fresh Foods", "Frozen Foods", "Dairy", "Meats", "Beverages"});
+                JLabel categoryLabel = new JLabel("Κατηγορία:");
+                JComboBox<String> categoryComboBox = new JComboBox<>(new String[]{"Φρέσκα Τρόφιμα", "Κατεψυγμένα τρόφιμα", "Προϊόντα ψυγείου", "Αλλαντικά", "Αλκοολούχα ποτά"});
                 categoryComboBox.setSelectedItem(selectedProduct.getCategory());
-                JLabel subcategoryLabel = new JLabel("Subcategory:");
-                JComboBox<String> subcategoryComboBox = new JComboBox<>(new String[]{"Fruits", "Vegetables", "Fish", "Meats"});
+                JLabel subcategoryLabel = new JLabel("Υποκατηγορία:");
+                JComboBox<String> subcategoryComboBox = new JComboBox<>(new String[]{"Φρούτα", "Κατεψυγμένα λαχανικά","Τυριά", "Ζαμπόν", "Μπύρα"});
                 subcategoryComboBox.setSelectedItem(selectedProduct.getSubcategory());
-                JLabel priceLabel = new JLabel("Price:");
+                JLabel priceLabel = new JLabel("Τιμή:");
                 JTextField priceField = new JTextField(String.valueOf(selectedProduct.getPrice()));
-                JLabel quantityLabel = new JLabel("Quantity:");
+                JLabel quantityLabel = new JLabel("Ποσότητα:");
                 JTextField quantityField = new JTextField(String.valueOf(selectedProduct.getQuantity()));
 
-                JButton updateButton = new JButton("Update Product");
+                JButton updateButton = new JButton("Ενημέρωση προϊόντος");
                 formPanel.add(nameLabel);
                 formPanel.add(nameField);
                 formPanel.add(descriptionLabel);
@@ -353,7 +383,7 @@ public class AdminScreen extends JFrame {
                                 throw new NumberFormatException();
                             }
                         } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "Invalid price or quantity.");
+                            JOptionPane.showMessageDialog(null, "Λάθος τιμή ή ποσότητα.");
                             return;
                         }
 
@@ -368,13 +398,17 @@ public class AdminScreen extends JFrame {
 
                         FileHandler.saveProducts(products);
 
-                        JOptionPane.showMessageDialog(null, "Product updated successfully.");
+                        JOptionPane.showMessageDialog(null, "Το προϊόν ενημερώθηκε επιτυχώς.");
                         editFormFrame.dispose(); // Close the form
                     }
                 });
             }
         }
     }
+
+    /**
+     * Εμφανίζει τις στατιστικές του συστήματος (π.χ. τον αριθμό προϊόντων, τη συνολική τιμή κλπ).
+     */
     private void showStatistics() {
 
         List<Product> products = FileHandler.loadProducts();
@@ -413,6 +447,11 @@ public class AdminScreen extends JFrame {
         JOptionPane.showMessageDialog(this, panel, "Στατιστικά Προϊόντων", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     *
+     * @param products τα προϊόντα που δεν ειναι διαθεσιμα
+     * @return επιστρεφει την λίστα με τα προϊόντα που δεν ειναι διαθέσιμα
+     */
     private List<Product> getUnavailableProducts(List<Product> products) {
         List<Product> unavailableProducts = new ArrayList<>();
         for (Product product : products) {
@@ -423,6 +462,12 @@ public class AdminScreen extends JFrame {
         return unavailableProducts;
     }
 
+    /**
+     *
+     * @param orders λίστα με παραγγελίες
+     * @param products λίστα με τα προϊόντα
+     * @return επιστρέφει μία λίστα με τα προϊόντα που έχουν γίνει περισσότερες φορές παραγγελία
+     */
     private List<Product> getMostOrderedProducts(List<Order> orders, List<Product> products) {
         Map<String, Integer> productOrderCount = new HashMap<>();
 
@@ -453,4 +498,3 @@ public class AdminScreen extends JFrame {
     }
 
 }
-
